@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017 - 2018 The LineageOS Project
+# Copyright (C) 2017-2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ endif
 
 # Camera
 TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
-	/system/bin/mm-qcamera-daemon=23
+	/vendor/bin/mm-qcamera-daemon=23
 
 # Display
 TARGET_CONTINUOUS_SPLASH_ENABLED := true
@@ -145,18 +145,25 @@ TARGET_HW_DISK_ENCRYPTION := true
 EXCLUDE_SERIF_FONTS := true
 
 # Filesystem
-BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4294967296
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 57033596416
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4294967296
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_SIZE := 649523200
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
+BOARD_FLASH_BLOCK_SIZE := 131072
+
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+
 BOARD_ROOT_EXTRA_FOLDERS := persist
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/dsp:/dsp \
     /vendor/firmware_mnt:/firmware
+
+TARGET_USES_MKE2FS := true
 
 # Filesystem Config
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
@@ -208,9 +215,6 @@ OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 # Recovery
 TARGET_RECOVERY_DEVICE_DIRS += $(DEVICE_PATH)
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USES_MKE2FS := true
-TARGET_USERIMAGES_USE_F2FS := true
 
 # RIL
 TARGET_USES_OLD_MNC_FORMAT := true
@@ -223,32 +227,38 @@ BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 
 # Shims
 TARGET_LD_SHIM_LIBS := \
-   /system/lib64/lib-imsvt.so|libshims_ims.so \
-   /system/bin/mm-qcamera-daemon|libshims_camera.so \
-   /system/lib64/hw/gxfingerprint.default.so|fakelogprint.so \
-   /system/lib64/hw/fingerprint.vendor.msm8952.so|fakelogprint.so \
-   /system/bin/gx_fpd|fakelogprint.so
-
-# Wifi
-BOARD_HAS_QCOM_WLAN			:= true
-BOARD_HAS_QCOM_WLAN_SDK			:= true
-BOARD_WLAN_DEVICE			:= qcwcn
-BOARD_HOSTAPD_DRIVER			:= NL80211
-BOARD_HOSTAPD_PRIVATE_LIB		:= lib_driver_cmd_$(BOARD_WLAN_DEVICE)
-BOARD_WPA_SUPPLICANT_DRIVER		:= NL80211
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB	:= lib_driver_cmd_$(BOARD_WLAN_DEVICE)
-WIFI_DRIVER_FW_PATH_AP			:= "ap"
-WIFI_DRIVER_FW_PATH_STA			:= "sta"
-WPA_SUPPLICANT_VERSION			:= VER_0_8_X
-PRODUCT_VENDOR_MOVE_ENABLED		:= true
-TARGET_DISABLE_WCNSS_CONFIG_COPY	:= true
-TARGET_USES_WCNSS_MAC_ADDR_REV		:= true
+   /vendor/lib64/lib-imsvt.so|libshims_ims.so \
+   /vendor/bin/mm-qcamera-daemon|libshims_camera.so \
+   /vendor/lib64/hw/gxfingerprint.default.so|fakelogprint.so \
+   /vendor/lib64/hw/fingerprint.vendor.msm8952.so|fakelogprint.so \
+   /vendor/bin/gx_fpd|fakelogprint.so
 
 # OTA Assert
 TARGET_OTA_ASSERT_DEVICE := s2,le_s2,le_s2_ww
 
 #Enable DRM plugins 64 bit compilation
 TARGET_ENABLE_MEDIADRM_64 := true
+
+# Treble
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
+PRODUCT_FULL_TREBLE_OVERRIDE := true
+PRODUCT_VENDOR_MOVE_ENABLED := true
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Wifi
+BOARD_HAS_QCOM_WLAN := true
+BOARD_HAS_QCOM_WLAN_SDK := true
+BOARD_WLAN_DEVICE := qcwcn
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+HOSTAPD_VERSION := VER_0_8_X
+WIFI_DRIVER_FW_PATH_AP := "ap"
+WIFI_DRIVER_FW_PATH_STA := "sta"
+WIFI_DRIVER_FW_PATH_P2P := "p2p"
+WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDOMIZATION := true
+WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # inherit from the proprietary version
 -include vendor/leeco/s2/BoardConfigVendor.mk

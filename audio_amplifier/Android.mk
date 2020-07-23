@@ -22,15 +22,11 @@ LOCAL_C_INCLUDES += \
     hardware/libhardware/include
 
 LOCAL_HEADER_LIBRARIES := generated_kernel_headers
-
 LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libtfa9890 libtinyalsa
-
 LOCAL_SRC_FILES := audio_amplifier.c
-
 LOCAL_MODULE := audio_amplifier.$(TARGET_BOARD_PLATFORM)
-
 LOCAL_MODULE_RELATIVE_PATH := hw
-
 LOCAL_MODULE_TAGS := optional
+LOCAL_VENDOR_MODULE := true
 
 include $(BUILD_SHARED_LIBRARY)

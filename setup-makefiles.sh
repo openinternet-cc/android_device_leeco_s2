@@ -37,14 +37,14 @@ fi
 . "${HELPER}"
 
 # Initialize the helper
-setup_vendor "${DEVICE}" "${VENDOR}" "${LINEAGE_ROOT}"
+setup_vendor "${DEVICE}" "${VENDOR}" "${LINEAGE_ROOT}" "true"
 
 # Copyright headers and guards
-write_headers
+write_headers "s2"
 
-write_makefiles "${MY_DIR}"/proprietary-files.txt
+write_makefiles "${MY_DIR}"/proprietary-files.txt true
 
-write_makefiles "${MY_DIR}"/proprietary-files-qc.txt
+write_makefiles "${MY_DIR}"/proprietary-files-qc.txt true
 
 # Finish
 write_footers
