@@ -219,7 +219,6 @@ service gx_fpd /vendor/bin/gx_fpd
     class late_start
     user system
     group system
-    seclabel u:r:goodix:s0
 
 on charger
     setprop persist.sys.usb.config mass_storage
